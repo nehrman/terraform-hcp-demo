@@ -12,6 +12,7 @@ resource "hcp_hvn" "new" {
 # Manage Consul Cluster in HashiCorp Cloud Platform
 
 resource "hcp_consul_cluster" "new" {
+  depends_on = [hcp_hvn.new]
   for_each   = var.consul_cluster
   cluster_id = each.key
   #  hvn_id          = hcp_hvn.new[each.key].hvn_id
@@ -24,6 +25,6 @@ resource "hcp_consul_cluster" "new" {
 # Create Consul ACL Root Token
 
 resource "hcp_consul_cluster_root_token" "new" {
-    for_each = hcp_consul_cluster.new
-    cluster_id = each.value.cluster_id
+  for_each   = hcp_consul_cluster.new
+  cluster_id = each.value.cluster_id
 }
